@@ -2,20 +2,22 @@ import org.apache.spark.storage.StorageLevel
 import org.apache.spark.streaming.StreamingContext
 import org.apache.spark.streaming.api.java.{JavaReceiverInputDStream, JavaDStream, JavaStreamingContext}
 import org.apache.spark.streaming.dstream.{ReceiverInputDStream, DStream}
+import facebook4j
 
 object FacebookUtils {
-  // À completer 
+  var lastTimestamp : Long = System.currentTimeMillis
+
+
+  def getPosts(page : String) {
+
+  }
+
+  def setLastTimestamp() {
+    lastTimestamp = System.currentTimeMillis
+  }
 
 
 
-
-  /**
-   * Create a input stream that returns tweets received from Facebook.
-   * Storage level of the data will be the default StorageLevel.MEMORY_AND_DISK_SER_2.
-   * @param jssc          JavaStreamingContext object
-   * @param facebookAuth  Facebook4J Authorization
-   * @param filters       Set of filter strings to get only those posts that match them
-   */
   def createStream(
       jssc: JavaStreamingContext,
       facebookAuth: Authorization,

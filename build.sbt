@@ -14,7 +14,8 @@ libraryDependencies ++= Seq(
   "org.apache.spark" %% "spark-streaming-facebook" % "1.5.1",
   "org.facebook4j" % "facebook4j-core" % "3.0.6",
   "com.datastax.spark" %% "spark-cassandra-connector" % "1.5.0-M2",
-  "org.scalatest" %% "scalatest" % "2.2.4" % "test"
+  "org.scalatest" %% "scalatest" % "2.2.4" % "test",
+  "org.scalaj" % "scalaj-http_2.8.1" % "0.3.0"
 )
 
 // META-INF discarding
