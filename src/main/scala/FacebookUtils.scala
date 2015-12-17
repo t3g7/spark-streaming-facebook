@@ -9,14 +9,24 @@ import facebook4j.Facebook
 import facebook4j.Reading
 import facebook4j.auth.AccessToken
 
+import java.util.concurrent._
+
+import scala.io.Source._
+
+
 object FacebookUtils {
   // This value has to be in seconds as the faebook graph API uses epoch timestamps
   var lastTimestamp : Long = System.currentTimeMillis / 1000
   val facebook: Facebook = new FacebookFactory().getInstance()
 
-  def facebookConfig (token : String) : Facebook = {
-    facebook.setOAuthAppId("", "")
+  // Get the list of the pages to monitor
+  val accounts = fromInputStream(getClass().getResourceAsStream("/facebookPages.txt")).getLines.toList
 
+  def facebookConfig () : Facebook = {
+    // Get token from the token.txt file
+    val token = fromInputStream(getClass().getResourceAsStream("/token.txt")).getLines().next
+
+    facebook.setOAuthAppId("", "")
     facebook.setOAuthAccessToken(new AccessToken(token))
 
     facebook
@@ -34,6 +44,22 @@ object FacebookUtils {
   def setLastTimestamp() = {
     lastTimestamp = System.currentTimeMillis / 1000
   }
+
+  def createStream() = {
+    val ex = new ScheduledThreadPoolExecutor(1)
+    val task = new Runnable {
+      def run() = {
+        val posts : List[facebook4j.Post] = List.empty
+        for (account <- accounts) {
+          print(account)
+          posts ++ getPosts(account).asInstanceOf[List[facebook4j.Post]]
+          println(posts)
+        }
+      }
+    }
+    val f = ex.scheduleAtFixedRate(task, 15, 15, TimeUnit.SECONDS)
+  }
+
 /*
 
 
