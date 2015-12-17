@@ -13,7 +13,7 @@ class Streamer {
    * @param table
    */
   def start(ssc: StreamingContext, keyspace: String, table: String) {
-
+/*
     val filters = Seq("orange", "orange_france", "sosh", "sosh_fr", "orange_conseil")
     val stream = FacebookUtils.createStream(ssc, None, filters).filter(_.getLang == "fr")
 
@@ -41,5 +41,7 @@ class Streamer {
     ssc.checkpoint("./checkpoint")
     ssc.start()
     ssc.awaitTermination()
+  */
   }
+
 }

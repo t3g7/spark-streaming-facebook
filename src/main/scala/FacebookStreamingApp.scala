@@ -1,40 +1,45 @@
-import com.datastax.spark.connector.cql.CassandraConnector
-import org.apache.spark.streaming.{Seconds, StreamingContext}
-import org.apache.spark.{SparkContext, SparkConf}
+//import com.datastax.spark.connector.cql.CassandraConnector
+//import org.apache.spark.streaming.{Seconds, StreamingContext}
+//import org.apache.spark.{SparkContext, SparkConf}
+
+import facebook4j.FacebookFactory
+import facebook4j.Facebook
+import facebook4j.auth.AccessToken
 
 /**
- * Set Facebook credentials in src/main/resources/twitter_credentials.txt
- *
- * or export as environment variables: !!! TO DO !!!
- *    export TWITTER_CONSUMER_KEY="value"
- *    export TWITTER_CONSUMER_SECRET="value"
- *    export TWITTER_ACCESS_TOKEN="value"
- *    export TWITTER_ACCESS_TOKEN_SECRET="value"
- *
- * or pass them as -D system properties:
- *    -Dtwitter4j.oauth.consumerKey="value"
- *    -Dtwitter4j.oauth.consumerSecret="value"
- *    -Dtwitter4j.oauth.accessToken="value"
- *    -Dtwitter4j.oauth.accessTokenSecret="value"
- *
- * Tweets are saved to a Cassandra instance. To verify persisted data with cqlsh:
- * cqlsh> SELECT * FROM twitter_streaming.tweets
+ * Set Facebook credentials in src/main/scala/facebook4j.properties
+ * Posts are saved to a Cassandra instance. To verify persisted data with cqlsh:
+ * cqlsh> SELECT * FROM facebook_streaming.posts
  *
  */
 
 object FacebookStreamingApp {
 
-  // Set Facebook credentials
-  FacebookSettings.configureFacebookCredentials()
+  def main(args: Array[String]): Unit = {
+
+    val facebook: Facebook = new FacebookFactory().getInstance()
+    facebook.setOAuthAppId("466204236897129", "fc28bfa024225c99b4db2d8f548474fd")
+    facebook.setOAuthAccessToken(new AccessToken("CAACEdEose0cBAE4mhOOZBFKXBYAxKRSbPT0XQ8MDiuNG8XqLagA0LOGDEZBP0GY0CZAUZAzhQidHSx7qwYA7DRoDZBq4sCZBEGXu4nEFOKJdyWz4LySZBKShqgjGU9nqrfabXlmVp2kr4lv6ZBo1nSZAQnijCU2TLlJVEkAzVJKlZANP9Re2WfbRFtCZBYrXybVJMu5ksmIK9ngdBrEZBX8W0sbZC", null))
+
+    facebook.getOAuthAppAccessToken()
+
+    var feed = facebook.getFeed("Orange.France")
+
+    println(feed)
+
+  }
+  //  FacebookUtils.setLastTimestamp()
 
   // Set Spark configuration and context
-  val conf = new SparkConf()
-    .setMaster("local[2]")
-    .setAppName("FacebookStreamingApp")
-    .set("spark.cassandra.connection.host", "localhost")
-  val sc = new SparkContext(conf)
-  val ssc = new StreamingContext(sc, Seconds(1))
+  //  val conf = new SparkConf()
+  //    .setMaster("local[2]")
+  //    .setAppName("FacebookStreamingApp")
+  //    .set("spark.cassandra.connection.host", "localhost")
+  //  val sc = new SparkContext(conf)
+  //  val ssc = new StreamingContext(sc, Seconds(1))
 
+
+/*
   def main(args: Array[String]): Unit = {
     setUpCassandra()
 
@@ -67,4 +72,5 @@ object FacebookStreamingApp {
       )
     }
   }
+  */
 }
