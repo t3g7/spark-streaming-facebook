@@ -2,9 +2,8 @@
 //import org.apache.spark.streaming.{Seconds, StreamingContext}
 //import org.apache.spark.{SparkContext, SparkConf}
 
-import facebook4j.FacebookFactory
 import facebook4j.Facebook
-import facebook4j.auth.AccessToken
+import utils.FacebookUtils
 
 /**
  * Set Facebook credentials in src/main/scala/facebook4j.properties
@@ -17,11 +16,7 @@ object FacebookStreamingApp {
 
   def main(args: Array[String]): Unit = {
 
-    val facebook: Facebook = new FacebookFactory().getInstance()
-    facebook.setOAuthAppId("", "")
-
-    facebook.setOAuthAccessToken(new AccessToken("CAACEdEose0cBAI3O926CjyNhSECQvjW1tVvO6bZBMDSzgdYYns7TbwzfvRKRyN2KZAJiZAny0K1KDG0o7qfR7C2hlIDU1a5fEDfGlQb80zCtWqFYhS2FsWM3L6NYZA9CALvHmjhNzkOJKza9x55APcZCZBBQ0tcZCpOYfRv2BFjKArgQmMxS4tqVmiOpd37wFK9fkOreI6cbeEho3bQ3MZCZC"))
-
+    val facebook : Facebook = FacebookUtils.facebookConfig("")
     var feed = facebook.getFeed("Orange.France")
 
     println(feed)

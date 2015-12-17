@@ -1,10 +1,24 @@
-import org.apache.spark.storage.StorageLevel
-import org.apache.spark.streaming.api.java.{JavaReceiverInputDStream, JavaDStream, JavaStreamingContext}
-import org.apache.spark.streaming.dstream.{ReceiverInputDStream, DStream}
+package utils
 
+//import org.apache.spark.storage.StorageLevel
+//import org.apache.spark.streaming.api.java.{JavaReceiverInputDStream, JavaDStream, JavaStreamingContext}
+//import org.apache.spark.streaming.dstream.{ReceiverInputDStream, DStream}
 
-class FacebookUtils {
+import facebook4j.FacebookFactory
+import facebook4j.Facebook
+import facebook4j.auth.AccessToken
+
+object FacebookUtils {
   var lastTimestamp : Long = System.currentTimeMillis
+
+  def facebookConfig (token : String) : Facebook = {
+    val facebook: Facebook = new FacebookFactory().getInstance()
+    facebook.setOAuthAppId("", "")
+
+    facebook.setOAuthAccessToken(new AccessToken(token))
+
+    facebook
+  }
 
 
   def getPosts(page : String) ={
