@@ -18,10 +18,9 @@ object FacebookStreamingApp {
   def main(args: Array[String]): Unit = {
 
     val facebook: Facebook = new FacebookFactory().getInstance()
-    facebook.setOAuthAppId("466204236897129", "fc28bfa024225c99b4db2d8f548474fd")
-    facebook.setOAuthAccessToken(new AccessToken("CAACEdEose0cBAE4mhOOZBFKXBYAxKRSbPT0XQ8MDiuNG8XqLagA0LOGDEZBP0GY0CZAUZAzhQidHSx7qwYA7DRoDZBq4sCZBEGXu4nEFOKJdyWz4LySZBKShqgjGU9nqrfabXlmVp2kr4lv6ZBo1nSZAQnijCU2TLlJVEkAzVJKlZANP9Re2WfbRFtCZBYrXybVJMu5ksmIK9ngdBrEZBX8W0sbZC", null))
+    facebook.setOAuthAppId("", "")
 
-    facebook.getOAuthAppAccessToken()
+    facebook.setOAuthAccessToken(new AccessToken("CAACEdEose0cBAI3O926CjyNhSECQvjW1tVvO6bZBMDSzgdYYns7TbwzfvRKRyN2KZAJiZAny0K1KDG0o7qfR7C2hlIDU1a5fEDfGlQb80zCtWqFYhS2FsWM3L6NYZA9CALvHmjhNzkOJKza9x55APcZCZBBQ0tcZCpOYfRv2BFjKArgQmMxS4tqVmiOpd37wFK9fkOreI6cbeEho3bQ3MZCZC"))
 
     var feed = facebook.getFeed("Orange.France")
 

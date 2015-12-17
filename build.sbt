@@ -11,11 +11,9 @@ libraryDependencies ++= Seq(
   "com.github.scala-incubator.io" %% "scala-io-file" % "0.4.3",
   "org.apache.spark" %% "spark-core" % "1.5.1" % "provided",
   "org.apache.spark" %% "spark-streaming" % "1.5.1" % "provided",
-  "org.apache.spark" %% "spark-streaming-facebook" % "1.5.1",
-  "org.facebook4j" % "facebook4j-core" % "3.0.6",
+  "org.facebook4j" % "facebook4j-core" % "2.4.1",
   "com.datastax.spark" %% "spark-cassandra-connector" % "1.5.0-M2",
-  "org.scalatest" %% "scalatest" % "2.2.4" % "test",
-  "org.scalaj" % "scalaj-http_2.8.1" % "0.3.0"
+  "org.scalatest" %% "scalatest" % "2.2.4" % "test"
 )
 
 // META-INF discarding
