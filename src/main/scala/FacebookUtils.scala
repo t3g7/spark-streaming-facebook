@@ -6,13 +6,15 @@ package utils
 
 import facebook4j.FacebookFactory
 import facebook4j.Facebook
+import facebook4j.Reading
 import facebook4j.auth.AccessToken
 
 object FacebookUtils {
-  var lastTimestamp : Long = System.currentTimeMillis
+  // This value has to be in seconds as the faebook graph API uses epoch timestamps
+  var lastTimestamp : Long = System.currentTimeMillis / 1000
+  val facebook: Facebook = new FacebookFactory().getInstance()
 
   def facebookConfig (token : String) : Facebook = {
-    val facebook: Facebook = new FacebookFactory().getInstance()
     facebook.setOAuthAppId("", "")
 
     facebook.setOAuthAccessToken(new AccessToken(token))
@@ -22,11 +24,15 @@ object FacebookUtils {
 
 
   def getPosts(page : String) ={
-
+    // TODO : Reading object that gets the parameters required
+    // - 1000 is just to test in the wait for a periodic call
+    val parameters = new Reading().addParameter("since", lastTimestamp)
+    setLastTimestamp()
+    facebook.getFeed(page, parameters)
   }
 
   def setLastTimestamp() = {
-    lastTimestamp = System.currentTimeMillis
+    lastTimestamp = System.currentTimeMillis / 1000
   }
 /*
 

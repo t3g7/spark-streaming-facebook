@@ -5,6 +5,7 @@
 import facebook4j.Facebook
 import utils.FacebookUtils
 
+import java.util.concurrent._
 /**
  * Set Facebook credentials in src/main/scala/facebook4j.properties
  * Posts are saved to a Cassandra instance. To verify persisted data with cqlsh:
@@ -17,13 +18,18 @@ object FacebookStreamingApp {
   def main(args: Array[String]): Unit = {
 
     val facebook : Facebook = FacebookUtils.facebookConfig("")
-    var feed = facebook.getFeed("Orange.France")
 
-    println(feed)
+    var posts = FacebookUtils.getPosts("Orange.France")
 
+    val ex = new ScheduledThreadPoolExecutor(1)
+    val task = new Runnable {
+      def run() = {
+        posts = FacebookUtils.getPosts("Orange.France")
+        println(posts)
+      }
+    }
+    val f = ex.scheduleAtFixedRate(task, 15, 15, TimeUnit.SECONDS)
   }
-  //  FacebookUtils.setLastTimestamp()
-
   // Set Spark configuration and context
   //  val conf = new SparkConf()
   //    .setMaster("local[2]")
