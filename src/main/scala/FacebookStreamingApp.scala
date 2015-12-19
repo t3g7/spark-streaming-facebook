@@ -6,29 +6,38 @@ import facebook4j.Facebook
 import utils.FacebookUtils
 
 /**
- * Set Facebook credentials in src/main/scala/facebookPages.txt
+ * Set Facebook auth access token in src/main/resources/token.txt
  * Posts are saved to a Cassandra instance. To verify persisted data with cqlsh:
  * cqlsh> SELECT * FROM facebook_streaming.posts
  *
  */
 
 object FacebookStreamingApp {
+  /**
+    * This is our main class
+    * @param args : Hint : there are none
+    */
 
   def main(args: Array[String]): Unit = {
 
     val facebook : Facebook = FacebookUtils.facebookConfig()
 
-//    var posts = FacebookUtils.getPosts("Orange.France")
-
     FacebookUtils.createStream()
+
+    // Config de Spark
+    // Set Spark configuration and context
+      val conf = new SparkConf()
+        .setMaster("local[2]")
+        .setAppName("FacebookStreamingApp")
+        .set("spark.cassandra.connection.host", "localhost")
+      val sc = new SparkContext(conf)
+      val ssc = new StreamingContext(sc, Seconds(1))
+
+
+    // Config de Cassandra => database creation with fields
+
   }
-  // Set Spark configuration and context
-  //  val conf = new SparkConf()
-  //    .setMaster("local[2]")
-  //    .setAppName("FacebookStreamingApp")
-  //    .set("spark.cassandra.connection.host", "localhost")
-  //  val sc = new SparkContext(conf)
-  //  val ssc = new StreamingContext(sc, Seconds(1))
+
 
 
 /*
