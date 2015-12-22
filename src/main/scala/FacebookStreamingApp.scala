@@ -26,12 +26,12 @@ object FacebookStreamingApp {
 
     // Config de Spark
     // Set Spark configuration and context
-      val conf = new SparkConf()
-        .setMaster("local[2]")
-        .setAppName("FacebookStreamingApp")
-        .set("spark.cassandra.connection.host", "localhost")
-      val sc = new SparkContext(conf)
-      val ssc = new StreamingContext(sc, Seconds(1))
+//      val conf = new SparkConf()
+//        .setMaster("local[2]")
+//        .setAppName("FacebookStreamingApp")
+//        .set("spark.cassandra.connection.host", "localhost")
+//      val sc = new SparkContext(conf)
+//      val ssc = new StreamingContext(sc, Seconds(1))
 
 
     // Config de Cassandra => database creation with fields

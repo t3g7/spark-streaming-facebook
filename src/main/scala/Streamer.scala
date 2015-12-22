@@ -35,8 +35,6 @@ class Streamer {
 
       )}
 
-    print(results)
-
     // Put them one by one into the database
 
 

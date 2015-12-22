@@ -4,9 +4,7 @@ package utils
 //import org.apache.spark.streaming.api.java.{JavaReceiverInputDStream, JavaDStream, JavaStreamingContext}
 //import org.apache.spark.streaming.dstream.{ReceiverInputDStream, DStream}
 
-import facebook4j.FacebookFactory
-import facebook4j.Facebook
-import facebook4j.Reading
+import facebook4j._
 import facebook4j.auth.AccessToken
 
 import java.util.concurrent._
@@ -20,8 +18,7 @@ object FacebookUtils {
     * It configs, streams and even do some more :)
     */
 
-  val facebook: Facebook = new FacebookFactory().getInstance()
-  var streamThread = null
+  val facebook : Facebook = new FacebookFactory().getInstance()
 
   // This value has to be in seconds as the Facebook graph API uses epoch timestamps
   var lastTimestamp : Long = System.currentTimeMillis / 1000
@@ -53,9 +50,9 @@ object FacebookUtils {
       * This function sets all the parameters and the desired fields before calling the Facebook API to recover the feed (page's post + other users' posts) from the desired page.
       * @param page : The name of the page for the feed to be recovered (as it appears on your browser's address bar)
       */
-    // TODO : Reading object that gets the parameters required
+    // Tofix : comments in the reading object to take nested fields
     val parameters = new Reading().addParameter("since", lastTimestamp)
-      // Add the fields we wanna recover
+      .fields("from", "message", "created_time", "comments", "story_tags")
 
     setLastTimestamp()
     facebook.getFeed(page, parameters)
@@ -66,28 +63,29 @@ object FacebookUtils {
       * Creates a thread that will be ran every X seconds to recover the new posts from all the pages we are monitoring.
       * This is an erzast for a streaming API call as it does'nt exist in Facebook4j
       */
+
     val ex = new ScheduledThreadPoolExecutor(1)
     val task = new Runnable {
       def run() = {
-        val posts : List[facebook4j.Post] = List.empty
+        /**
+          * Il faut faire en sorte qu'une ResponseList[Post] vide soit initialisée puis à chaque fois qu'on a un compte concatener les posts.
+          * Ou bien, pour chaque compte recuperer les posts puis lancer les méthodes de data mining, enregistrement sur Cassandra
+          */
+
+//        val posts : ResponseList[Post] = new ResponseList().super.empty
         // See if we can recover all the pages in one request, at worst do it like a batch request
         for (account <- accounts) {
-          posts ++ getPosts(account).asInstanceOf[List[facebook4j.Post]]
+          println(account)
+          println(getPosts(account))
         }
+        println(posts)
 
         // Process those fucking posts
       }
     }
 
     // Adjust the value of the period to the rate of users publications on the walls of Orange.France and sosh
-    streamThread = ex.scheduleAtFixedRate(task, 15, 15, TimeUnit.SECONDS)
-  }
-
-  def stopStream() = {
-    /**
-      * Clean stop of the "streaming" thread
-      */
-    streamThread.cancel()
+    val streamThread = ex.scheduleAtFixedRate(task, 1, 15, TimeUnit.SECONDS)
   }
 
   def setLastTimestamp() = {
