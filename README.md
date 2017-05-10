@@ -1,5 +1,5 @@
 # spark-streaming-facebook
-## /!\ This is NOT a stable version yet.
+## /!\ This is NOT a stable version yet. For a stable package, take a look at [streaming-facebook](https://github.com/CatalystCode/streaming-facebook).
 
 ### Configuration
 Get a user access token (https://developers.facebook.com/tools/explorer/) and copy it into ```src/main/resources/token.txt```
